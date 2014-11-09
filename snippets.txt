@@ -1,0 +1,43 @@
+
+	app.get("/settings", isLoggedIn, function(req, res)
+	{
+		res.send("tajnee");
+	});
+	
+	var loggedInFlag = false;
+	
+	app.get("/login",  function(req, res)
+	{
+		var user = req.query.user;
+		var password = req.query.password;
+		
+		console.log(req);
+		
+		if(user == "hub")
+		{
+			loggedInFlag = true;
+			res.send(JSON.stringify({status: "ok"}));
+		} else {
+			res.send(JSON.stringify({status: "err"}));
+		}
+		
+	});
+	
+	function isLoggedIn(req, res, next)
+	{
+		if(loggedInFlag)
+			return next()
+		else
+			res.redirect('/');
+	}
+	
+	
+		app.get('/event', function(req, res)
+	{
+		sql = 'SELECT * FROM event';
+		//console.log(sql);
+		connection.query(sql, function(err, devices, fields) {
+			res.send(JSON.stringify(devices));
+		});
+	}); 	
+	
